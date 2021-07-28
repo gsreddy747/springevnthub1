@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    azure:
+      eventhub:
+        connection-string: Endpoint=sb://azfdxevnthub.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=NYHjselr3FGHDS516L28z4zPvCgNhwfr+I7jtW2SuVc=
+        checkpoint-storage-account: azfedexdemo
+        checkpoint-access-key: DefaultEndpointsProtocol=https;AccountName=azfedexdemo;AccountKey=TAifVXNOauBShip3wZEHtFH5zwDdB0MpHCyuufr84LqhLzVnMF1tXEtPMtSOtd8oW8yqRu6+yCSMw/zBGen2Ug==;EndpointSuffix=core.windows.net
+        checkpoint-container: eventhubcheck
+
+    stream:
+      bindings:
+        consume-in-0:
+          destination: blobtoevent
+          group: $Default
+        supply-out-0:
+          destination: blobtoevent
+
+      eventhub:
+        bindings:
+          consume-in-0:
+            consumer:
+              checkpoint-mode: MANUAL
+      function:
+        definition: consume;supply;
+      poller:
+        initial-delay: 0
+        fixed-delay: 1000
